@@ -1,0 +1,11 @@
+__pycache__
+users.db
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log
+*.env
+.png
+

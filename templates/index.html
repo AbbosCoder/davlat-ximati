@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Davlat Xizmati Ariza</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 40px; max-width: 600px; margin: auto; }
+        label { display: block; margin-top: 10px; }
+        input, select { width: 100%; padding: 8px; margin-top: 5px; }
+        button { margin-top: 20px; padding: 10px; width: 100%; background-color: green; color: white; border: none; font-size: 16px; }
+        .response { margin-top: 20px; padding: 15px; border: 1px solid #ccc; background-color: #f0f0f0; }
+        .flash-message { padding: 10px; margin: 10px 0; background-color: #dff0d8; border: 1px solid #d6e9c6; }
+    </style>
+</head>
+<body>
+    <h2>Davlat xizmatiga ariza topshirish</h2>
+    
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form id="applicationForm" method="POST" action="{{ url_for('index') }}">
+        <label>F.I.Sh:
+            <input type="text" id="full_name" name="full_name" required>
+        </label>
+        <label>Pasport raqami:
+            <input type="text" id="passport_number" name="passport_number" required>
+        </label>
+        <label>Telefon raqami:
+            <input type="text" id="phone_number" name="phone_number" required>
+        </label>
+        <label>Xizmat turi:
+            <select id="service_type" name="service_type" required>
+                <option value="">Tanlang</option>
+                <option value="Pasport olish">Pasport olish</option>
+                <option value="Haydovchilik guvohnomasi">Haydovchilik guvohnomasi</option>
+                <option value="Nikohni rasmiylashtirish">Nikohni rasmiylashtirish</option>
+            </select>
+        </label>
+        <button type="submit">Ariza topshirish</button>
+    </form>
+
+    {% if response %}
+    <div class="response">
+        <h3>Ariza ma'lumotlari:</h3>
+        <p>F.I.Sh: {{ response.full_name }}</p>
+        <p>Xizmat turi: {{ response.service_type }}</p>
+        <p>Xizmat raqami: #{{ response.service_number }}</p>
+        <a href="{{ url_for('generate_pdf', service_id=response.id) }}" target="_blank">
+            <button style="background-color: #007bff;">PDF yuklab olish</button>
+        </a>
+    </div>
+    {% endif %}
+</body>
+</html>
